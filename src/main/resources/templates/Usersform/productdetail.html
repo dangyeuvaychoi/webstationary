@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en" ng-app="myapp">
+
+<head>
+    <!-- Các thư viện, các tệp CSS và các thứ khác -->
+</head>
+
+<body ng-controller="MainController">
+    <!-- Phần cố định của trang web -->
+    <header>
+        <!-- Header content -->
+    </header>
+
+    <!-- Ng-view để hiển thị nội dung chuyển động -->
+    <div ng-view></div>
+<!-- Trong productdetail.html -->
+
+<!-- Trong productdetail.html -->
+
+<div ng-controller="ctrlProductDetail">
+    <h2>{{ show.name }}</h2>
+    <p>{{ show.description }}</p>
+    <!-- Các chi tiết khác của sản phẩm -->
+    
+    <div>
+        <strong>Giá:</strong> {{ show.unitPrice | currency:"":0 }} VND
+    </div>
+    <div>
+        <strong>Đánh giá:</strong>
+        <ul class="rating">
+            <li ng-repeat="star in show.stars track by $index">
+                <span class="ti-star" ng-class="{ 'checked': star }"></span>
+            </li>
+        </ul>
+    </div>
+    
+    <!-- Các chi tiết khác của sản phẩm -->
+
+    <div class="back-to-home">
+        <a href="#/home">Trở lại trang chủ</a>
+    </div>
+</div>
+
+    <!-- Phần cố định của trang web -->
+    <footer>
+        <!-- Footer content -->
+    </footer>
+
+    <!-- Các tệp JS và các thứ khác -->
+</body>
+
+</html>
