@@ -1,36 +1,24 @@
 var myapp = angular.module("app", []);
 let hostHome = "http://localhost:8080/restProduct/products";
 
-myapp.controller("ctrlHome", function($scope, $http, $location) {
-	// Khởi tạo các biến dữ liệu
-    $scope.items = [];
-    $scope.itemcate = [];
-    $scope.show = {};
-
-    /*Hàm load_all để tải danh sách sản phẩm:*/
-    $scope.load_all = function() {
-    $http.get(`${hostHome}`)
-        .then(resp => {
-            $scope.items = resp.data; 
-            $scope.items.forEach(item => {
-                item.enteredDate = new Date(item.enteredDate); 
-            });
-        })
-        .catch(error => {
-            console.error('Error loading products:', error);
-            // Xử lý lỗi tại đây, có thể thông báo cho người dùng hoặc thực hiện các hành động khác.
+myapp.controller("ctrlHome", function($scope, $http) {
+	 // Khởi tạo các biến dữ liệu
+	$scope.items = [];
+	$scope.itemcate = [];
+	$scope.show = {};
+	/*Hàm load_all để tải danh sách sản phẩm:*/
+	$scope.load_all = function() {
+    $http.get(`${hostHome}`).then(resp => {
+        $scope.items = resp.data; // Gán dữ liệu sản phẩm từ phản hồi server vào biến $scope.items
+        $scope.items.forEach(item => {
+            item.enteredDate = new Date(item.enteredDate); // Chuyển đổi định dạng ngày thành đối tượng ngày
         });
+    });
 }
-
-
-    /* Thêm hàm chuyển hướng khi người dùng click vào hình ảnh sản phẩm */
-    $scope.redirectToProductDetail = function(productId) {
-        $location.path('/productdetail/' + productId);
-    }
 
 	/* Hàm getAmount để tính giá sau khi giảm giá:*/
 	$scope.getAmount = function(unitPrice, discount) {
-    return unitPrice * ((100 - discount) / 100); 
+    return unitPrice * ((100 - discount) / 100); // Tính giá sau khi áp dụng giảm giá
 }
 
 
@@ -48,14 +36,11 @@ myapp.controller("ctrlHome", function($scope, $http, $location) {
 	})
 
 	/*Hàm views để xem thông tin sản phẩm:*/
-	$scope.views = function(product) {
-    $scope.show = angular.copy(product); 
-    $('#productModal').modal('show'); 
- 
-    
-    // Điều hướng tới trang giao diện chi tiết sản phẩm
- $location.path("/productdetail/" + product.productID);
-   
+	$scope.views = function(productID) {
+    var url = `${hostHome}/${productID}`;
+    $http.get(url).then(resp => {
+        $scope.show = resp.data; // Gán thông tin sản phẩm vào biến $scope.show để hiển thị
+    }).catch(error => console.log("Error", error));
 }
 
 
